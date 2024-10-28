@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нормализация базы данных для системы заказов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        .table-wrapper {
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        .description {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-left: 5px solid #0056b3;
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Нормализация базы данных для системы заказов</h1>
+
+<!-- Таблица orders -->
+<div class="table-wrapper">
+    <h2>Таблица <code>orders</code> (заказы)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>id</code></td>
+                <td>INT</td>
+                <td>Уникальный ID заказа</td>
+            </tr>
+            <tr>
+                <td><code>event_id</code></td>
+                <td>INT</td>
+                <td>ID события</td>
+            </tr>
+            <tr>
+                <td><code>event_date</code></td>
+                <td>DATETIME</td>
+                <td>Дата и время события</td>
+            </tr>
+            <tr>
+                <td><code>user_id</code></td>
+                <td>INT</td>
+                <td>ID пользователя</td>
+            </tr>
+            <tr>
+                <td><code>equal_price</code></td>
+                <td>INT</td>
+                <td>Общая сумма заказа</td>
+            </tr>
+            <tr>
+                <td><code>created</code></td>
+                <td>DATETIME</td>
+                <td>Дата создания заказа</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="description">
+        <p><strong>Описание:</strong> Таблица <code>orders</code> содержит общие сведения о заказе, включая дату события, пользователя, общую сумму заказа и дату создания записи.</p>
+    </div>
+</div>
+
+<!-- Таблица ticket_types -->
+<div class="table-wrapper">
+    <h2>Таблица <code>ticket_types</code> (типы билетов)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>id</code></td>
+                <td>INT</td>
+                <td>Уникальный ID типа билета</td>
+            </tr>
+            <tr>
+                <td><code>name</code></td>
+                <td>VARCHAR</td>
+                <td>Название типа билета (взрослый, детский, льготный, групповой)</td>
+            </tr>
+            <tr>
+                <td><code>price</code></td>
+                <td>INT</td>
+                <td>Цена за единицу билета</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="description">
+        <p><strong>Описание:</strong> Таблица <code>ticket_types</code> позволяет добавлять различные типы билетов и задавать для них цены, обеспечивая гибкость в управлении видами билетов, даже, к примеру, если в будущем ещё появятся какие-либо типы билетов, которые отличаются от существующих, с легкостью можно будет добавить новый тип.</p>
+    </div>
+</div>
+
+<!-- Таблица tickets -->
+<div class="table-wrapper">
+    <h2>Таблица <code>tickets</code> (билеты)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>id</code></td>
+                <td>INT</td>
+                <td>Уникальный ID билета</td>
+            </tr>
+            <tr>
+                <td><code>order_id</code></td>
+                <td>INT</td>
+                <td>ID заказа, к которому привязан билет</td>
+            </tr>
+            <tr>
+                <td><code>ticket_type_id</code></td>
+                <td>INT</td>
+                <td>ID типа билета</td>
+            </tr>
+            <tr>
+                <td><code>barcode</code></td>
+                <td>VARCHAR</td>
+                <td>Уникальный штрихкод для билета</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="description">
+        <p><strong>Описание:</strong> Таблица <code>tickets</code> содержит информацию о каждом купленном билете, включая уникальный штрихкод для проверки оператором/администратором на входе. Она позволяет проверять каждый билет индивидуально, даже если они принадлежат одному заказу. Таким образом заказ может быть 1, а билетов хоть 10.</p>
+    </div>
+</div>
+
+
+</body>
+</html>
